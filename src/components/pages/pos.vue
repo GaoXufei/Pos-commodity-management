@@ -4,14 +4,14 @@
       <el-col :span="7" class="pos-order">
         <el-tabs >
           <el-tab-pane label="订单" class="paneHeight">
-            <el-table :data="goodDate" class="goodTable">
-              <el-table-column prop="goodName" label="商品名称" fixed="left"></el-table-column>
-              <el-table-column prop="goodNumber" label="数量(个)"></el-table-column>
-              <el-table-column prop="goodPrice" label="价格(元)"></el-table-column>
+            <el-table :data="goodsData" class="goodTable">
+              <el-table-column prop="goodsName" label="商品名称" fixed="left"></el-table-column>
+              <el-table-column prop="goodsCount" label="数量(个)"></el-table-column>
+              <el-table-column prop="goodsPrice" label="单价(元)"></el-table-column>
               <el-table-column label="操作" fixed="right">
                 <template slot-scope="scope">
                   <el-button type="text" size="small">删除</el-button>
-                  <el-button type="text" size="small">增加</el-button>
+                  <el-button type="text" size="small" @click="addOrderCount(scope.row)">增加</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -37,17 +37,71 @@
           </div>
           <div class="content">
             <ul>
-              <li v-for="goods in hotGoods">
-                <span v-text="goods.goodName"></span><i>{{ goods.goodPrice | PriceConversion }}</i>
+              <li v-for="goods in hotGoods" :key="goods.id" @click="addOrderList(goods)">
+                <span v-text="goods.goodsName"></span><i>{{ goods.price | PriceConversion }}</i>
               </li>
             </ul>
           </div>
         </div>
+        <div class="goodsType">
+          <el-tabs type="border-card">
+            <el-tab-pane label="汉堡">
+              <ul class="cookList">
+                <li v-for="cook in goodsType0" :key="cook.goodsId" @click="addOrderList(cook)">
+                  <div class="goodsImg">
+                    <img :src="cook.goodsImg" alt="">
+                  </div>
+                  <p>
+                    <span v-text="cook.goodsName"></span>
+                    <i>{{ cook.price | PriceConversion }}</i>
+                  </p>
+                </li>
+              </ul>
+            </el-tab-pane>
+            <el-tab-pane label="小食">
+              <ul class="cookList">
+                <li v-for="cook in goodsType1" :key="cook.goodsId" @click="addOrderList(cook)">
+                  <div class="goodsImg">
+                    <img :src="cook.goodsImg" alt="">
+                  </div>
+                  <p>
+                    <span v-text="cook.goodsName"></span>
+                    <i>{{ cook.price | PriceConversion }}</i>
+                  </p>
+                </li>
+              </ul>
+            </el-tab-pane>
+            <el-tab-pane label="饮料">
+              <ul class="cookList">
+                <li v-for="cook in goodsType2" :key="cook.goodsId" @click="addOrderList(cook)">
+                  <div class="goodsImg">
+                    <img :src="cook.goodsImg" alt="">
+                  </div>
+                  <p>
+                    <span v-text="cook.goodsName"></span>
+                    <i>{{ cook.price | PriceConversion }}</i>
+                  </p>
+                </li>
+              </ul>
+            </el-tab-pane>
+            <el-tab-pane label="套餐">
+              <ul class="cookList">
+                <li v-for="cook in goodsType3" :key="cook.goodsId" @click="addOrderList(cook)">
+                  <div class="goodsImg">
+                    <img :src="cook.goodsImg" alt="">
+                  </div>
+                  <p>
+                    <span v-text="cook.goodsName"></span>
+                    <i>{{ cook.price | PriceConversion }}</i>
+                  </p>
+                </li>
+              </ul>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
       </el-col>
-
-
     </el-row>
-      
+    
   </div>
 </template>
 
@@ -56,215 +110,71 @@ export default {
   name: 'pos',
   data(){
     return {
-      goodDate:[
-        {
-          goodName: '烧饼',
-          goodNumber: 99,
-          goodPrice: 8
-        },
-        {
-          goodName: '煎饼',
-          goodNumber: 53,
-          goodPrice: 11
-        },
-        {
-          goodName: '火烧',
-          goodNumber: 64,
-          goodPrice: 5
-        },
-        {
-          goodName: '卤煮',
-          goodNumber: 99,
-          goodPrice: 8
-        },
-        {
-          goodName: '咸鸭蛋',
-          goodNumber: 99,
-          goodPrice: 8
-        },
-      ],
-      hotGoods:[
-        {
-          goodName: '香辣鸡腿堡',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '雪碧',
-          goodNumber: 53,
-          goodPrice: 11
-        },
-        {
-          goodName: '柠檬照烧鸡',
-          goodNumber: 64,
-          goodPrice: 51
-        },
-        {
-          goodName: '自然鸡排饭',
-          goodNumber: 99,
-          goodPrice: 82
-        },
-        {
-          goodName: '苹果',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '香辣鸡腿堡',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '雪碧',
-          goodNumber: 53,
-          goodPrice: 11
-        },
-        {
-          goodName: '柠檬照烧鸡',
-          goodNumber: 64,
-          goodPrice: 51
-        },
-        {
-          goodName: '自然鸡排饭',
-          goodNumber: 99,
-          goodPrice: 82
-        },
-        {
-          goodName: '苹果',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '香辣鸡腿堡',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '雪碧',
-          goodNumber: 53,
-          goodPrice: 11
-        },
-        {
-          goodName: '柠檬照烧鸡',
-          goodNumber: 64,
-          goodPrice: 51
-        },
-        {
-          goodName: '自然鸡排饭',
-          goodNumber: 99,
-          goodPrice: 82
-        },
-        {
-          goodName: '苹果',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '香辣鸡腿堡',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '雪碧',
-          goodNumber: 53,
-          goodPrice: 11
-        },
-        {
-          goodName: '柠檬照烧鸡',
-          goodNumber: 64,
-          goodPrice: 51
-        },
-        {
-          goodName: '自然鸡排饭',
-          goodNumber: 99,
-          goodPrice: 82
-        },
-        {
-          goodName: '苹果',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '香辣鸡腿堡',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '雪碧',
-          goodNumber: 53,
-          goodPrice: 11
-        },
-        {
-          goodName: '柠檬照烧鸡',
-          goodNumber: 64,
-          goodPrice: 51
-        },
-        {
-          goodName: '自然鸡排饭',
-          goodNumber: 99,
-          goodPrice: 82
-        },
-        {
-          goodName: '苹果',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '香辣鸡腿堡',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '雪碧',
-          goodNumber: 53,
-          goodPrice: 11
-        },
-        {
-          goodName: '柠檬照烧鸡',
-          goodNumber: 64,
-          goodPrice: 51
-        },
-        {
-          goodName: '自然鸡排饭',
-          goodNumber: 99,
-          goodPrice: 82
-        },
-        {
-          goodName: '苹果',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '香辣鸡腿堡',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-        {
-          goodName: '雪碧',
-          goodNumber: 53,
-          goodPrice: 11
-        },
-        {
-          goodName: '柠檬照烧鸡',
-          goodNumber: 64,
-          goodPrice: 51
-        },
-        {
-          goodName: '自然鸡排饭',
-          goodNumber: 99,
-          goodPrice: 82
-        },
-        {
-          goodName: '苹果',
-          goodNumber: 99,
-          goodPrice: 88
-        },
-      ]
+      goodsType0:[],
+      goodsType1:[],
+      goodsType2:[],
+      goodsType3:[],
+      goodsData:[],
+      hotGoods:[]
     }
   },
   filters:{
     PriceConversion: function(price){
       return `￥${price}`
+    }
+  },
+  created(){
+    (async () => {
+
+      let responseOften = await this.$axios.get('http://jspang.com/DemoApi/oftenGoods.php');
+      let responseType = await this.$axios.get('http://jspang.com/DemoApi/typeGoods.php');
+      this.hotGoods = responseOften.data;
+      this.goodsType0 = responseType.data[0];
+      this.goodsType1 = responseType.data[1];
+      this.goodsType2 = responseType.data[2];
+      this.goodsType3 = responseType.data[3];
+
+    })()
+    
+    
+    
+  },
+  methods:{
+    addOrderList(goods){
+
+      // 商品是否已存在订单列表中
+      let isHas = false;
+      for(let i of this.goodsData){
+        if(i.goodsId === goods.goodsId){
+          isHas = true
+        }
+      }
+      
+      // 根据判断的值编写业务逻辑
+      if(isHas){
+        // 改变列表中商品的数量
+        this.goodsData.filter(x => x.goodsId === goods.goodsId)[0].goodsCount++
+
+      }else{
+        // 创建一个新对象
+        function newGoods(goods){
+          return {
+            goodsId: goods.goodsId,
+            goodsName: goods.goodsName,
+            goodsCount: 1,
+            goodsPrice: goods.price
+          }
+        }
+        
+        // 将新建对象压入订单列表数组中
+        this.goodsData.push(newGoods(goods))
+
+
+      }
+      
+    },
+    addOrderCount(goods){
+      this.goodsData.filter(x => x.goodsId === goods.goodsId)[0].goodsCount++
     }
   }
 }
@@ -328,6 +238,7 @@ export default {
       border:1px solid #ccc;
       padding:10px 15px;
       border-radius: 5px;
+      cursor: pointer;
     }
     .hot .content ul li span,
     .hot .content ul li i{
@@ -336,6 +247,48 @@ export default {
     .hot .content ul li i{
       color: rgb(16, 112, 221);
       padding-left:5px;
+    }
+    .goodsType{
+      padding:0 10px;
+      box-sizing: border-box;
+    }
+    .goodsType .cookList{
+      width:100%;
+      overflow: hidden;
+      margin-left: -10px;
+      margin-top: -10px;
+    }
+    .goodsType .cookList li{
+      width:180px;
+      float: left;
+      margin-left:10px;
+      display: table;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .goodsType .cookList li div.goodsImg{
+      width:50%;
+      display: table-cell;
+      vertical-align: top;
+    }
+    .goodsType .cookList li div.goodsImg img{
+      width:100%;
+    }
+    .goodsType .cookList li p{
+      display: table-cell;
+      vertical-align: top;
+      padding-left:10px;
+      box-sizing: border-box;
+    }
+    .goodsType .cookList li p span{
+      margin-bottom:20px;
+      font-size: 13px;
+      display: block;
+      overflow: hidden;
+    }
+    .goodsType .cookList li p i{
+      color: darkred;
+      display: block;
     }
 </style>
 

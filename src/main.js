@@ -10,10 +10,15 @@ import './statics/style/iconfont.css'
 // 导入element-ui组件
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-
+// 导入axios
+import Axios from 'axios'
+// 将axios加入vue原型中
+Vue.prototype.$axios = Axios
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+
+
 
 /* eslint-disable no-new */
 new Vue({
