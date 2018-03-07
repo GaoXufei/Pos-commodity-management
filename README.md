@@ -1,6 +1,6 @@
-# pos
+# Pos
 
-> 这是一个pos商品管理系统
+> pos收银系统
 
 ## Build Setup
 
