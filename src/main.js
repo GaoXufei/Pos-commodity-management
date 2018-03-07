@@ -14,6 +14,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Axios from 'axios'
 // 将axios加入vue原型中
 Vue.prototype.$axios = Axios
+
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false

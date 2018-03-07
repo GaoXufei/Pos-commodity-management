@@ -1,6 +1,6 @@
 # pos
 
-> A Vue.js project
+> 这是一个pos商品管理系统
 
 ## Build Setup
 
@@ -18,4 +18,17 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+> 完成功能
+- [x] 通过api接收商品数据
+- [x] 商品合计
+- [x] 商品小计
+- [x] 商品分类
+- [x] 单个商品的增加/减少/删除
+
+> 待开发功能
+- [ ] 后台管理
+- [ ] 商品挂单
+- [ ] 商品外卖
+- [ ] 商品结账
+- [ ] 商品支付
+逐步完善中...

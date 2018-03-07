@@ -6,26 +6,29 @@
           <el-tab-pane label="订单" class="paneHeight">
             <el-table :data="goodsData" class="goodTable">
               <el-table-column prop="goodsName" label="商品名称" fixed="left"></el-table-column>
-              <el-table-column prop="goodsCount" label="数量(个)"></el-table-column>
               <el-table-column prop="goodsPrice" label="单价(元)"></el-table-column>
               <el-table-column label="操作" fixed="right">
                 <template slot-scope="scope">
-                  <el-button type="text" size="small">删除</el-button>
-                  <el-button type="text" size="small" @click="addOrderCount(scope.row)">增加</el-button>
+                  <el-input-number v-model="scope.row.goodsCount" size="mini" :min="1" :max="99" controls-position="right" class="goodsCountBox"></el-input-number>
+                  <el-button type="text" size="small" @click="removeOrderItem(scope.row)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
+            <div class="goodsSummary">
+              <i>数量：</i><span>{{ GoodsDataTotalCount }}件</span>
+              <i>价格：</i><span>{{ GoodsDataTotalMoney | PriceConversion }}</span>
+            </div>
             <div class="goodOrderBtn">
-              <el-button type="success" >结账</el-button>
+              <el-button type="success" @click="checkOut">结账</el-button>
               <el-button type="warning" >挂单</el-button>
-              <el-button type="" >外卖</el-button>
+              <el-button type="">外卖</el-button>
             </div>
           </el-tab-pane>
           <el-tab-pane label="挂单" class="paneHeight">
-2
+            暂时无法挂单
           </el-tab-pane>
           <el-tab-pane label="外卖" class="paneHeight">
-3
+            外卖休息中
           </el-tab-pane>
         </el-tabs>
         
@@ -52,7 +55,7 @@
                     <img :src="cook.goodsImg" alt="">
                   </div>
                   <p>
-                    <span v-text="cook.goodsName"></span>
+                    <span>{{ cook.goodsName }}</span>
                     <i>{{ cook.price | PriceConversion }}</i>
                   </p>
                 </li>
@@ -65,7 +68,7 @@
                     <img :src="cook.goodsImg" alt="">
                   </div>
                   <p>
-                    <span v-text="cook.goodsName"></span>
+                    <span>{{ cook.goodsName }}</span>
                     <i>{{ cook.price | PriceConversion }}</i>
                   </p>
                 </li>
@@ -78,7 +81,7 @@
                     <img :src="cook.goodsImg" alt="">
                   </div>
                   <p>
-                    <span v-text="cook.goodsName"></span>
+                    <span>{{ cook.goodsName }}</span>
                     <i>{{ cook.price | PriceConversion }}</i>
                   </p>
                 </li>
@@ -91,7 +94,7 @@
                     <img :src="cook.goodsImg" alt="">
                   </div>
                   <p>
-                    <span v-text="cook.goodsName"></span>
+                    <span>{{ cook.goodsName }}</span>
                     <i>{{ cook.price | PriceConversion }}</i>
                   </p>
                 </li>
@@ -115,7 +118,9 @@ export default {
       goodsType2:[],
       goodsType3:[],
       goodsData:[],
-      hotGoods:[]
+      hotGoods:[],
+      totalCount: 0,
+      totalPrice: 0
     }
   },
   filters:{
@@ -141,7 +146,6 @@ export default {
   },
   methods:{
     addOrderList(goods){
-
       // 商品是否已存在订单列表中
       let isHas = false;
       for(let i of this.goodsData){
@@ -149,12 +153,10 @@ export default {
           isHas = true
         }
       }
-      
-      // 根据判断的值编写业务逻辑
+      // 根据isHas判断的值编写业务逻辑
       if(isHas){
         // 改变列表中商品的数量
-        this.goodsData.filter(x => x.goodsId === goods.goodsId)[0].goodsCount++
-
+        this.addOrderCount(goods);
       }else{
         // 创建一个新对象
         function newGoods(goods){
@@ -169,12 +171,71 @@ export default {
         // 将新建对象压入订单列表数组中
         this.goodsData.push(newGoods(goods))
 
-
       }
+
+      
+      
       
     },
     addOrderCount(goods){
-      this.goodsData.filter(x => x.goodsId === goods.goodsId)[0].goodsCount++
+      /**@goods
+       * 获取到当前商品对象 goods
+       * 用过滤器单独操作当前对象
+       * 添加当前对象到订单列表对象中
+       */
+      this.goodsData.filter(x => x.goodsId === goods.goodsId)[0].goodsCount++;
+      
+    },
+    removeOrderItem(goods){
+      /**@goods
+       * 获取到当前商品对象 goods
+       * 用过滤器单独操作当前对象
+       * 从订单列表对象中去掉当前商品对象
+       */
+      this.goodsData.splice(this.goodsData.filter(x => x.goodsId === goods.goodsId)[0], 1)
+    },
+    checkOut(){
+      /**@augments
+       * 结账
+       */
+      if(this.totalCount !== 0){
+        this.$message({
+          message: '结账成功！',
+          type: 'success'
+        })
+        this.goodsData = [];
+      }else{
+        this.$message({
+          message: '什么都没有！',
+          type: 'warning'
+        })
+
+      }
+    }
+ 
+  },
+  watch:{
+    
+  },
+  computed: {
+    /**@augments
+     * 订单列表 商品数量
+     */
+    GoodsDataTotalCount(){
+      let totalCount = 0;
+      this.goodsData.forEach(ele => {
+        totalCount += ele.goodsCount;
+      })
+      this.totalCount = totalCount
+      return totalCount;
+    },
+    GoodsDataTotalMoney(){
+      let totalPrice = 0;
+      this.goodsData.forEach(ele => {
+        totalPrice += (ele.goodsPrice * ele.goodsCount);
+      })
+      this.totalPrice = totalPrice
+      return totalPrice;
     }
   }
 }
@@ -207,7 +268,6 @@ export default {
       width:100%;
       box-sizing: border-box;
       border:1px solid #eee;
-      
     }
     .goodOrderBtn{
       margin-top:10px;
@@ -215,7 +275,6 @@ export default {
     .hot{
       padding:0 10px;
       box-sizing: border-box;
-      
     }
     .hot .title{
       border-bottom:1px solid #ccc;
@@ -289,6 +348,24 @@ export default {
     .goodsType .cookList li p i{
       color: darkred;
       display: block;
+    }
+    .goodsSummary{
+      padding:10px;
+      box-sizing: border-box;
+      background: #eee;
+      font-size: 14px;
+      font-family: '微软雅黑';
+      color: #333;
+    }
+    .goodsSummary span{
+      color: red;
+      margin-right: 20px;
+    }
+    .goodsSummary i{
+      
+    }
+    .goodsCountBox{
+      width:60%;
     }
 </style>
 
