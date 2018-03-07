@@ -138,11 +138,7 @@ export default {
       this.goodsType1 = responseType.data[1];
       this.goodsType2 = responseType.data[2];
       this.goodsType3 = responseType.data[3];
-
     })()
-    
-    
-    
   },
   methods:{
     addOrderList(goods){
@@ -167,15 +163,9 @@ export default {
             goodsPrice: goods.price
           }
         }
-        
         // 将新建对象压入订单列表数组中
         this.goodsData.push(newGoods(goods))
-
       }
-
-      
-      
-      
     },
     addOrderCount(goods){
       /**@goods
@@ -184,7 +174,6 @@ export default {
        * 添加当前对象到订单列表对象中
        */
       this.goodsData.filter(x => x.goodsId === goods.goodsId)[0].goodsCount++;
-      
     },
     removeOrderItem(goods){
       /**@goods
